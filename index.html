@@ -5,105 +5,187 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Management</title>
     <style>
-        body { 
-            font-family: Arial, sans-serif; 
-            margin: 20px; 
+        /* General Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+            color: #333;
         }
-        table { 
-            width: 100%; 
-            border-collapse: collapse; 
-            margin-top: 20px; 
+
+        h3 {
+            color: #007bff;
+            text-align: center;
+            margin-bottom: 20px;
         }
-        th, td { 
-            border: 1px solid #ddd; 
-            padding: 12px; 
-            text-align: left; 
+
+        /* Form Styles */
+        .form-section {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            animation: fadeIn 1s ease-in-out;
         }
-        th { 
-            background-color: #f8f9fa; 
+
+        .form-group {
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
         }
-        .form-section { 
-            margin-bottom: 20px; 
+
+        .form-group label {
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
         }
-        .form-group { 
-            margin-bottom: 15px; 
-            display: flex; 
-            flex-direction: column; 
+
+        .form-group input[type="text"],
+        .form-group input[type="number"],
+        .form-group input[type="email"] {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
         }
-        .form-group label { 
-            margin-bottom: 5px; 
-            font-weight: bold; 
+
+        .form-group input:focus {
+            border-color: #007bff;
+            outline: none;
         }
-        .form-group input[type="text"], 
-        .form-group input[type="number"], 
-        .form-group input[type="email"] { 
-            padding: 8px; 
-            width: 100%; 
-            box-sizing: border-box; 
+
+        .gender-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 5px;
         }
-        .gender-group { 
-            display: flex; 
-            gap: 10px; 
-            margin-top: 5px; 
+
+        .gender-group label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
-        button { 
-            padding: 10px 20px; 
-            cursor: pointer; 
-            background-color: #007bff; 
-            color: white; 
-            border: none; 
-            border-radius: 5px; 
+
+        button {
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
         }
-        button:hover { 
-            background-color: #0056b3; 
+
+        button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+
+        /* Table Styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            animation: slideIn 1s ease-in-out;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 5px;
+        }
+
+        .action-buttons button {
+            padding: 5px 10px;
+            font-size: 14px;
+        }
+
+        .action-buttons button.edit {
+            background-color: #28a745;
+        }
+
+        .action-buttons button.edit:hover {
+            background-color: #218838;
+        }
+
+        .action-buttons button.delete {
+            background-color: #dc3545;
+        }
+
+        .action-buttons button.delete:hover {
+            background-color: #c82333;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
         }
 
         /* Responsive Design */
-        @media (min-width: 600px) {
-            .form-group { 
-                flex-direction: row; 
-                align-items: center; 
-            }
-            .form-group label { 
-                width: 100px; 
-                margin-bottom: 0; 
-                text-align: right; 
-                margin-right: 10px; 
-            }
-            .form-group input[type="text"], 
-            .form-group input[type="number"], 
-            .form-group input[type="email"] { 
-                width: 200px; 
-            }
-        }
-
         @media (max-width: 600px) {
-            table, thead, tbody, th, td, tr { 
-                display: block; 
+            table, thead, tbody, th, td, tr {
+                display: block;
             }
-            th { 
-                position: absolute; 
-                top: -9999px; 
-                left: -9999px; 
+
+            th {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
             }
-            tr { 
-                border: 1px solid #ccc; 
-                margin-bottom: 10px; 
+
+            tr {
+                border: 1px solid #ccc;
+                margin-bottom: 10px;
+                border-radius: 5px;
             }
-            td { 
-                border: none; 
-                border-bottom: 1px solid #eee; 
-                position: relative; 
-                padding-left: 50%; 
+
+            td {
+                border: none;
+                border-bottom: 1px solid #eee;
+                position: relative;
+                padding-left: 50%;
             }
-            td:before { 
-                position: absolute; 
-                left: 10px; 
-                width: 45%; 
-                padding-right: 10px; 
-                white-space: nowrap; 
-                content: attr(data-label); 
-                font-weight: bold; 
+
+            td:before {
+                position: absolute;
+                left: 10px;
+                width: 45%;
+                padding-right: 10px;
+                white-space: nowrap;
+                content: attr(data-label);
+                font-weight: bold;
+                color: #007bff;
+            }
+
+            .action-buttons {
+                justify-content: flex-start;
             }
         }
     </style>
@@ -162,19 +244,23 @@
             <td data-label="GENDER">Male</td>
             <td data-label="EMAIL">Dhoni@gmail.com</td>
             <td data-label="ACTION">
-                <button onclick="editStudent(this)">Edit</button>
-                <button onclick="deleteStudent(this)">Delete</button>
+                <div class="action-buttons">
+                    <button class="edit" onclick="editStudent(this)">Edit</button>
+                    <button class="delete" onclick="deleteStudent(this)">Delete</button>
+                </div>
             </td>
         </tr>
         <tr>
-            <td data-label="NAME">UMESh</td>
+            <td data-label="NAME">Umesh</td>
             <td data-label="AGE">22</td>
             <td data-label="COURSE">JavaScript</td>
             <td data-label="GENDER">Male</td>
             <td data-label="EMAIL">Umesh@gmail.com</td>
             <td data-label="ACTION">
-                <button onclick="editStudent(this)">Edit</button>
-                <button onclick="deleteStudent(this)">Delete</button>
+                <div class="action-buttons">
+                    <button class="edit" onclick="editStudent(this)">Edit</button>
+                    <button class="delete" onclick="deleteStudent(this)">Delete</button>
+                </div>
             </td>
         </tr>
     </tbody>
@@ -184,7 +270,6 @@
     let editingRow = null;
 
     function saveStudent() {
-        // Get form values
         const name = document.getElementById('name').value;
         const age = document.getElementById('age').value;
         const gender = document.querySelector('input[name="gender"]:checked').value;
@@ -211,8 +296,10 @@
                 <td data-label="GENDER">${gender}</td>
                 <td data-label="EMAIL">${email}</td>
                 <td data-label="ACTION">
-                    <button onclick="editStudent(this)">Edit</button>
-                    <button onclick="deleteStudent(this)">Delete</button>
+                    <div class="action-buttons">
+                        <button class="edit" onclick="editStudent(this)">Edit</button>
+                        <button class="delete" onclick="deleteStudent(this)">Delete</button>
+                    </div>
                 </td>
             `;
         }
