@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Management</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background-color: #f8f9fa; }
+        input[type="text"], input[type="number"], input[type="email"] { 
+            padding: 6px; width: 200px; 
+        }
+        .gender-group { display: inline-block; margin-left: 10px; }
+        button { padding: 8px 16px; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+<div class="form-section">
+    <h3>Student Details</h3>
+    <form id="studentForm">
+        <label>Name:</label>
+        <input type="text" id="name" required><br><br>
+
+        <label>Age:</label>
+        <input type="number" id="age" required><br><br>
+
+        <label>Gender:</label>
+        <div class="gender-group">
+            <input type="radio" name="gender" value="Male" checked> Male
+            <input type="radio" name="gender" value="Female"> Female
+        </div><br><br>
+
+        <label>Course:</label>
+        <input type="text" id="course" required><br><br>
+
+        <label>E-mail:</label>
+        <input type="email" id="email" required><br><br>
+
+        <button type="button" onclick="saveStudent()" style="font-weight: bold">Save</button>
+    </form>
+</div>
+
+<table id="studentTable">
+    <thead>
+        <tr>
+            <th>NAME</th>
+            <th>AGE</th>
+            <th>COURSE</th>
+            <th>GENDER</th>
+            <th>EMAIL</th>
+            <th>ACTION</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Dhoni</td>
+            <td>43</td>
+            <td>PYTHON</td>
+            <td>Male</td>
+            <td>Dhoni@gmail.com</td>
+            <td><button onclick="deleteStudent(this)">Delete</button></td>
+        </tr>
+        <tr>
+            <td>Umesh</td>
+            <td>22</td>
+            <td>JavaScript</td>
+            <td>Male</td>
+            <td>Umesh@gmail.com</td>
+            <td><button onclick="deleteStudent(this)">Delete</button></td>
+        </tr>
+    </tbody>
+</table>
+
+<script>
+    function saveStudent() {
+        // Get form values
+        const name = document.getElementById('name').value;
+        const age = document.getElementById('age').value;
+        const gender = document.querySelector('input[name="gender"]:checked').value;
+        const course = document.getElementById('course').value;
+        const email = document.getElementById('email').value;
+
+        // Create table row
+        const tbody = document.querySelector('#studentTable tbody');
+        const newRow = tbody.insertRow();
+
+        // Insert cells
+        newRow.innerHTML = `
+            <td>${name}</td>
+            <td>${age}</td>
+            <td>${course}</td>
+            <td>${gender}</td>
+            <td>${email}</td>
+            <td><button onclick="deleteStudent(this)">Delete</button></td>
+        `;
+
+        // Clear form
+        document.getElementById('studentForm').reset();
+    }
+
+    function deleteStudent(button) {
+        button.closest('tr').remove();
+    }
+</script>
+
+</body>
+</html>
