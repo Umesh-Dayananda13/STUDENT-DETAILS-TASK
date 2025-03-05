@@ -138,7 +138,7 @@
         </div>
         <div class="form-group">
             <label></label>
-            <button type="button" onclick="saveStudent()">Save</button>
+            <button type="button" onclick="saveStudent()" id="saveButton">Save</button>
         </div>
     </form>
 </div>
@@ -160,21 +160,29 @@
             <td data-label="AGE">43</td>
             <td data-label="COURSE">PYTHON</td>
             <td data-label="GENDER">Male</td>
-            <td data-label="EMAIL">Dhoni@gmail.com</td>
-            <td data-label="ACTION"><button onclick="deleteStudent(this)">Delete</button></td>
+            <td data-label="EMAIL">Amal@gmail.com</td>
+            <td data-label="ACTION">
+                <button onclick="editStudent(this)">Edit</button>
+                <button onclick="deleteStudent(this)">Delete</button>
+            </td>
         </tr>
         <tr>
-            <td data-label="NAME">Umesh</td>
+            <td data-label="NAME">UMESh</td>
             <td data-label="AGE">22</td>
             <td data-label="COURSE">JavaScript</td>
             <td data-label="GENDER">Male</td>
-            <td data-label="EMAIL">Umesh@gmail.com</td>
-            <td data-label="ACTION"><button onclick="deleteStudent(this)">Delete</button></td>
+            <td data-label="EMAIL">yosuva@gmail.com</td>
+            <td data-label="ACTION">
+                <button onclick="editStudent(this)">Edit</button>
+                <button onclick="deleteStudent(this)">Delete</button>
+            </td>
         </tr>
     </tbody>
 </table>
 
 <script>
+    let editingRow = null;
+
     function saveStudent() {
         // Get form values
         const name = document.getElementById('name').value;
@@ -183,22 +191,50 @@
         const course = document.getElementById('course').value;
         const email = document.getElementById('email').value;
 
-        // Create table row
-        const tbody = document.querySelector('#studentTable tbody');
-        const newRow = tbody.insertRow();
-
-        // Insert cells
-        newRow.innerHTML = `
-            <td data-label="NAME">${name}</td>
-            <td data-label="AGE">${age}</td>
-            <td data-label="COURSE">${course}</td>
-            <td data-label="GENDER">${gender}</td>
-            <td data-label="EMAIL">${email}</td>
-            <td data-label="ACTION"><button onclick="deleteStudent(this)">Delete</button></td>
-        `;
+        if (editingRow) {
+            // Update existing row
+            editingRow.cells[0].textContent = name;
+            editingRow.cells[1].textContent = age;
+            editingRow.cells[2].textContent = course;
+            editingRow.cells[3].textContent = gender;
+            editingRow.cells[4].textContent = email;
+            editingRow = null;
+            document.getElementById('saveButton').textContent = 'Save';
+        } else {
+            // Create new row
+            const tbody = document.querySelector('#studentTable tbody');
+            const newRow = tbody.insertRow();
+            newRow.innerHTML = `
+                <td data-label="NAME">${name}</td>
+                <td data-label="AGE">${age}</td>
+                <td data-label="COURSE">${course}</td>
+                <td data-label="GENDER">${gender}</td>
+                <td data-label="EMAIL">${email}</td>
+                <td data-label="ACTION">
+                    <button onclick="editStudent(this)">Edit</button>
+                    <button onclick="deleteStudent(this)">Delete</button>
+                </td>
+            `;
+        }
 
         // Clear form
         document.getElementById('studentForm').reset();
+    }
+
+    function editStudent(button) {
+        const row = button.closest('tr');
+        const cells = row.cells;
+
+        // Populate form with row data
+        document.getElementById('name').value = cells[0].textContent;
+        document.getElementById('age').value = cells[1].textContent;
+        document.querySelector(`input[name="gender"][value="${cells[3].textContent}"]`).checked = true;
+        document.getElementById('course').value = cells[2].textContent;
+        document.getElementById('email').value = cells[4].textContent;
+
+        // Set editing mode
+        editingRow = row;
+        document.getElementById('saveButton').textContent = 'Update';
     }
 
     function deleteStudent(button) {
