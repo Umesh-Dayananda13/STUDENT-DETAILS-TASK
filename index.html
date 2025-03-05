@@ -5,20 +5,107 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Management</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
-        th { background-color: #f8f9fa; }
-        .form-section { margin-bottom: 20px; }
-        .form-group { margin-bottom: 15px; display: flex; align-items: center; }
-        .form-group label { width: 100px; margin-right: 10px; text-align: right; }
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 20px; 
+        }
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin-top: 20px; 
+        }
+        th, td { 
+            border: 1px solid #ddd; 
+            padding: 12px; 
+            text-align: left; 
+        }
+        th { 
+            background-color: #f8f9fa; 
+        }
+        .form-section { 
+            margin-bottom: 20px; 
+        }
+        .form-group { 
+            margin-bottom: 15px; 
+            display: flex; 
+            flex-direction: column; 
+        }
+        .form-group label { 
+            margin-bottom: 5px; 
+            font-weight: bold; 
+        }
         .form-group input[type="text"], 
         .form-group input[type="number"], 
         .form-group input[type="email"] { 
-            padding: 6px; width: 200px; 
+            padding: 8px; 
+            width: 100%; 
+            box-sizing: border-box; 
         }
-        .gender-group { display: inline-block; margin-left: 10px; }
-        button { padding: 8px 16px; cursor: pointer; }
+        .gender-group { 
+            display: flex; 
+            gap: 10px; 
+            margin-top: 5px; 
+        }
+        button { 
+            padding: 10px 20px; 
+            cursor: pointer; 
+            background-color: #007bff; 
+            color: white; 
+            border: none; 
+            border-radius: 5px; 
+        }
+        button:hover { 
+            background-color: #0056b3; 
+        }
+
+        /* Responsive Design */
+        @media (min-width: 600px) {
+            .form-group { 
+                flex-direction: row; 
+                align-items: center; 
+            }
+            .form-group label { 
+                width: 100px; 
+                margin-bottom: 0; 
+                text-align: right; 
+                margin-right: 10px; 
+            }
+            .form-group input[type="text"], 
+            .form-group input[type="number"], 
+            .form-group input[type="email"] { 
+                width: 200px; 
+            }
+        }
+
+        @media (max-width: 600px) {
+            table, thead, tbody, th, td, tr { 
+                display: block; 
+            }
+            th { 
+                position: absolute; 
+                top: -9999px; 
+                left: -9999px; 
+            }
+            tr { 
+                border: 1px solid #ccc; 
+                margin-bottom: 10px; 
+            }
+            td { 
+                border: none; 
+                border-bottom: 1px solid #eee; 
+                position: relative; 
+                padding-left: 50%; 
+            }
+            td:before { 
+                position: absolute; 
+                left: 10px; 
+                width: 45%; 
+                padding-right: 10px; 
+                white-space: nowrap; 
+                content: attr(data-label); 
+                font-weight: bold; 
+            }
+        }
     </style>
 </head>
 <body>
@@ -37,8 +124,8 @@
         <div class="form-group">
             <label>Gender:</label>
             <div class="gender-group">
-                <input type="radio" name="gender" value="Male" checked> Male
-                <input type="radio" name="gender" value="Female"> Female
+                <label><input type="radio" name="gender" value="Male" checked> Male</label>
+                <label><input type="radio" name="gender" value="Female"> Female</label>
             </div>
         </div>
         <div class="form-group">
@@ -51,7 +138,7 @@
         </div>
         <div class="form-group">
             <label></label>
-            <button type="button" onclick="saveStudent()" style="font-weight: bold">Save</button>
+            <button type="button" onclick="saveStudent()">Save</button>
         </div>
     </form>
 </div>
@@ -69,20 +156,20 @@
     </thead>
     <tbody>
         <tr>
-            <td>Dhoni</td>
-            <td>43</td>
-            <td>PYTHON</td>
-            <td>Male</td>
-            <td>Dhoni@gmail.com</td>
-            <td><button onclick="deleteStudent(this)">Delete</button></td>
+            <td data-label="NAME">Dhoni</td>
+            <td data-label="AGE">22</td>
+            <td data-label="COURSE">PYTHON</td>
+            <td data-label="GENDER">Male</td>
+            <td data-label="EMAIL">Dhoni@gmail.com</td>
+            <td data-label="ACTION"><button onclick="deleteStudent(this)">Delete</button></td>
         </tr>
         <tr>
-            <td>Umesh</td>
-            <td>22</td>
-            <td>JavaScript</td>
-            <td>Male</td>
-            <td>Dhoni@gmail.com</td>
-            <td><button onclick="deleteStudent(this)">Delete</button></td>
+            <td data-label="NAME">Umesh</td>
+            <td data-label="AGE">23</td>
+            <td data-label="COURSE">JavaScript</td>
+            <td data-label="GENDER">Male</td>
+            <td data-label="EMAIL">Umesh@gmail.com</td>
+            <td data-label="ACTION"><button onclick="deleteStudent(this)">Delete</button></td>
         </tr>
     </tbody>
 </table>
@@ -102,12 +189,12 @@
 
         // Insert cells
         newRow.innerHTML = `
-            <td>${name}</td>
-            <td>${age}</td>
-            <td>${course}</td>
-            <td>${gender}</td>
-            <td>${email}</td>
-            <td><button onclick="deleteStudent(this)">Delete</button></td>
+            <td data-label="NAME">${name}</td>
+            <td data-label="AGE">${age}</td>
+            <td data-label="COURSE">${course}</td>
+            <td data-label="GENDER">${gender}</td>
+            <td data-label="EMAIL">${email}</td>
+            <td data-label="ACTION"><button onclick="deleteStudent(this)">Delete</button></td>
         `;
 
         // Clear form
